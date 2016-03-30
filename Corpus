@@ -1,0 +1,61 @@
+# -*- coding: utf-8 -*-
+import codecs
+import os
+#from urllib import urlopen
+from bs4 import BeautifulSoup
+import re
+##import nltk
+#def remove_content_li(input_document) :
+
+    #soup = BeautifulSoup(input_document)
+  
+
+def  extract_unicode(input):
+    _ascii_letters = re.compile(r'[a-zA-Z]', flags=re.UNICODE)
+    symbols = re.compile(r'[{} &+( )" =!.?.:.. / |  » © : >< #  «  ,] 1 2 3 4 5 6 7 8 9 _ - + ; [ ]  %',flags=re.UNICODE)
+    soup = BeautifulSoup(open(input,'r'),'lxml')
+    texts = soup.findAll(text=True)
+    
+        
+    #name = soup.title
+    #name= name+'.txt'
+    def contains_unicode(text):
+        try:
+            str(text)
+        except:
+            return True
+        return False
+
+    result = '  '.join((text for text in texts if contains_unicode(text)))
+    result =_ascii_letters.sub(" ", result)
+    result = symbols.sub(" ",result)
+    result.replace('*', '')
+    
+    
+        
+# Output to a file
+    with codecs.open("/home/akallararajappan/corpus/kannada/man3.txt",'a',encoding="utf-8") as out:
+        out.write(result)
+
+
+
+for dirname, dirnames, filenames in os.walk('/home/akallararajappan/corpus/kannada/tim'):
+  
+    print(dirname + ":")
+    #print filenames
+    for filename in filenames:
+       extract_unicode((os.path.join(dirname, filename)))
+
+"""
+
+def clean_html(filename) :
+    data = open(filena, 'r')
+    data.read()
+    newdata = nltk.clean(data)
+    print (newdata)
+"""
+
+
+
+
+
